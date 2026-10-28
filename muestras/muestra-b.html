@@ -325,7 +325,7 @@ License: Apache-2.0
 /* Static library artwork: no playback controls or runtime. */
 .hippo-library-image-stage{margin:32px 0;border:1px solid #d8dccd;border-radius:12px;background:#123e31;overflow:hidden}
 .hippo-library-image{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:contain}
-</style><meta http-equiv="Content-Security-Policy" content="default-src &#x27;none&#x27;; style-src &#x27;sha256-JLm+aWbTVmSIFVU0k3ZiVGMkVStB/11/rINgQj7H/Kw=&#x27; &#x27;sha256-g2MkLI/lLRYoT5i0TZDWctSQPLX51c0LdfBtp7ftLhQ=&#x27; &#x27;sha256-q/xb2fdp9XAS7Iyu1hQDzkUT+XUuP/QXvcDoDlpH/zo=&#x27; &#x27;sha256-+57kt62rL+ilwI7IZuLBpBUNTI5lP64dLGAZKWx6GPE=&#x27;; font-src &#x27;self&#x27; data:; img-src &#x27;self&#x27; data:; media-src &#x27;none&#x27;; script-src &#x27;sha256-699TnLj9yHDMgQ98C7gRC7BIIw7G465f39dGs98yo0s=&#x27;; connect-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;"><style>/* Named editions: exact titles, subtitles, and uncropped conceptual restaurant scene. */
+</style><meta http-equiv="Content-Security-Policy" content="default-src &#x27;none&#x27;; style-src &#x27;sha256-JLm+aWbTVmSIFVU0k3ZiVGMkVStB/11/rINgQj7H/Kw=&#x27; &#x27;sha256-g2MkLI/lLRYoT5i0TZDWctSQPLX51c0LdfBtp7ftLhQ=&#x27; &#x27;sha256-q/xb2fdp9XAS7Iyu1hQDzkUT+XUuP/QXvcDoDlpH/zo=&#x27; &#x27;sha256-+57kt62rL+ilwI7IZuLBpBUNTI5lP64dLGAZKWx6GPE=&#x27;; font-src &#x27;self&#x27; data:; img-src &#x27;self&#x27; data:; media-src &#x27;none&#x27;; script-src &#x27;sha256-699TnLj9yHDMgQ98C7gRC7BIIw7G465f39dGs98yo0s=&#x27; &#x27;sha256-RlyS76LIzztd9G0JoeNp541IjKDRKxxJ8ye6/QlvUdM=&#x27;; connect-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;"><style>/* Named editions: exact titles, subtitles, and uncropped conceptual restaurant scene. */
 .hippo-cover-subtitle{display:block;margin-top:4.5%;font:normal clamp(10px,1.1vw,14px)/1.35 Open,Arial,sans-serif;letter-spacing:0;max-width:98%;color:inherit;text-wrap:balance}
 .hippo-cover-title{overflow-wrap:normal}
 .hippo-bundle-mini .hippo-cover-subtitle{font-size:4px;line-height:1.25;margin-top:4%}
@@ -389,5 +389,33 @@ if(typeof document!=='undefined')(()=>{
  if(data.product==='A'){document.querySelectorAll('[data-story]').forEach((b,i)=>b.addEventListener('click',()=>showStoryA(i)));showStoryA(0);$('rate').addEventListener('change',renderA);$('reset').addEventListener('click',()=>{$('rate').value='11.5';renderA();});renderA();}
  else{document.querySelectorAll('[data-company]').forEach(b=>b.addEventListener('click',()=>{$('company').value=b.getAttribute('data-company');renderB();}));$('company').addEventListener('change',renderB);$('reset').addEventListener('click',()=>{$('company').value='MCD';renderB();});renderB();}
  requestAnimationFrame(()=>document.body.classList.add('js-ready'));
+})();
+</script><script id="hippo-campaign-labels">'use strict';
+// M20 m20_rc28_labels_v1: allowlisted campaign labels only; no persistence or events.
+(() => {
+  const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  const assets = new Set(['rc28_a01_v01', 'rc28_b01_v01', 'rc28_d01_v03', 'rc28_d01_claro_9x16_v01', 'rc28_l02_oscuro_9x16_v01']);
+  const pairs = new Set(['instagram/organic_social', 'instagram/paid_social', 'x/organic_social']);
+  const current = new URL(window.location.href);
+  if (!['https:', 'http:'].includes(current.protocol)) return;
+  if (keys.some(key => current.searchParams.getAll(key).length !== 1)) return;
+  const labels = Object.fromEntries(keys.map(key => [key, current.searchParams.get(key)]));
+  if (labels.utm_campaign !== 'ht_rc28_catalogo_p01' || !assets.has(labels.utm_content) ||
+      !pairs.has(labels.utm_source + '/' + labels.utm_medium)) return;
+  const pages = new Set(['/', '/index.html', '/a.html', '/b.html', '/bundle.html',
+    '/muestras/muestra-a.html', '/muestras/muestra-b.html', '/privacidad.html']);
+  const products = new Set(['/l/thcsej', '/l/dpedsq', '/l/yebgoj']);
+  for (const anchor of document.querySelectorAll('a[href]')) {
+    const raw = anchor.getAttribute('href');
+    if (!raw || raw.startsWith('#')) continue; // Same-document anchors already retain the query.
+    let target;
+    try { target = new URL(raw, current); } catch { continue; }
+    const internal = target.origin === current.origin && pages.has(target.pathname);
+    const gumroad = target.origin === 'https://hippothesis.gumroad.com' && products.has(target.pathname);
+    if ((!internal && !gumroad) || target.username || target.password) continue;
+    // Do not copy arbitrary landing query parameters, click IDs or personal information.
+    for (const key of keys) target.searchParams.set(key, labels[key]);
+    anchor.setAttribute('href', target.href);
+  }
 })();
 </script></body></html>
