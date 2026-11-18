@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https://www.facebook.com; style-src 'sha256-EGyRHj1cxxmCCAK+dB62t79McMv8G4kiieilsJvowaM='; script-src 'sha256-rA4aQmVksw6gFov82JScvLFX3JIRaIVxQBjQXeGEWqg=' 'sha256-dJpMKe/lUm11fkSNR8oRrNNwo+SCnz0szBeXFgHw5ls=' 'sha256-PAdLewCY8UXrju7MLbP/gbg+u6ZRsEekYkbjK1/YsO4=' https://static.cloudflareinsights.com/beacon.min.js https://connect.facebook.net; font-src 'self' data:; media-src 'none'; connect-src https://cloudflareinsights.com https://www.facebook.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https://www.facebook.com; style-src 'sha256-EGyRHj1cxxmCCAK+dB62t79McMv8G4kiieilsJvowaM='; script-src 'sha256-Ea0jtyBZ0s6deBw66fQqiUqXVu0Z8c8e+7kZxUFo7qY=' 'sha256-0W40KnAlLBZ/6ucP17kiet0FPZfq1PNbcSIM4LWQHtg=' 'sha256-6lFEFNOwq8/1VSmkbbQIsGXDTXJNORKR3VWgeR0b2w0=' https://static.cloudflareinsights.com/beacon.min.js https://connect.facebook.net; font-src 'self' data:; media-src 'none'; connect-src https://cloudflareinsights.com https://www.facebook.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="description" content="Tesis de inversión, educación financiera y herramientas de análisis. Explorá empresas, escenarios, riesgos y fuentes. Ediciones individuales y combos de compra única; Tesis Viva por membresía mensual o anual, a través de Gumroad.">
 <title>Hippo Thesis · Tesis de inversión y precios</title>
 <link rel="preload" as="image" href="assets/media/hero-earth-1400.webp" imagesrcset="assets/media/hero-earth-800.webp 800w, assets/media/hero-earth-1400.webp 1400w, assets/media/hero-earth.webp 2100w" imagesizes="100vw" fetchpriority="high">
@@ -187,7 +187,7 @@ function openDetail(button){
  }
 
  if(pageDetails[key]){const p=pageDetails[key];html=`<h2 id="dialog-title">${p.title}</h2><p>${p.excerpt}</p><button type="button" id="page-zoom" class="button outline" aria-pressed="false">Ampliar gráfico</button><div class="page-image-scroll"><img class="sample-image-full" src="${p.image}" width="1400" height="1980" alt="Página ${p.number} completa del caso histórico NVIDIA: ${p.title}"></div>`;}
- document.querySelector('#dialog-content').innerHTML=html;if(key==='energy')wireEnergyReader();dialog.showModal();dialog.scrollTop=0;document.body.classList.add('dialog-open');const zoom=document.querySelector('#page-zoom');if(zoom)zoom.addEventListener('click',()=>{const frame=document.querySelector('.page-image-scroll');const expanded=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(expanded));zoom.textContent=expanded?'Ver página completa':(key==='energy'?'Ampliar página':'Ampliar gráfico');frame.classList.toggle('is-zoomed',expanded);});
+ document.querySelector('#dialog-content').innerHTML=html;if(window.__hippoApplyCampaignLabels)window.__hippoApplyCampaignLabels(document.querySelector('#dialog-content'));if(key==='energy')wireEnergyReader();dialog.showModal();dialog.scrollTop=0;document.body.classList.add('dialog-open');const zoom=document.querySelector('#page-zoom');if(zoom)zoom.addEventListener('click',()=>{const frame=document.querySelector('.page-image-scroll');const expanded=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(expanded));zoom.textContent=expanded?'Ver página completa':(key==='energy'?'Ampliar página':'Ampliar gráfico');frame.classList.toggle('is-zoomed',expanded);});
 }
 document.querySelectorAll('[data-open]').forEach(button=>button.addEventListener('click',()=>openDetail(button)));
 document.querySelector('#close-dialog').addEventListener('click',()=>dialog.close());
@@ -205,32 +205,39 @@ methodTabs.forEach((tab,i)=>{tab.addEventListener('click',()=>activateMethod(tab
 
 function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='cartera'||key==='indicador-hippo'){const d=document.getElementById(key);if(d){d.open=true;d.scrollIntoView({block:'start'});}}}window.addEventListener('hashchange',openLegacyDisclosure);openLegacyDisclosure();
 </script><script id="hippo-campaign-labels">'use strict';
-// M20 m20_rc28_labels_v1: allowlisted campaign labels only; no persistence or events.
+// Well-formed campaign labels only. Values are sanitized; unknown parameters are not copied.
 (() => {
   const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
-  const assets = new Set(['rc28_a01_v01', 'rc28_b01_v01', 'rc28_d01_v03', 'rc28_d01_claro_9x16_v01', 'rc28_l02_oscuro_9x16_v01']);
-  const pairs = new Set(['instagram/organic_social', 'instagram/paid_social', 'x/organic_social']);
+  const valueOk = /^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$/;
   const current = new URL(window.location.href);
   if (!['https:', 'http:'].includes(current.protocol)) return;
-  if (keys.some(key => current.searchParams.getAll(key).length !== 1)) return;
-  const labels = Object.fromEntries(keys.map(key => [key, current.searchParams.get(key)]));
-  if (labels.utm_campaign !== 'ht_rc28_catalogo_p01' || !assets.has(labels.utm_content) ||
-      !pairs.has(labels.utm_source + '/' + labels.utm_medium)) return;
-  const pages = new Set(['/', '/index.html', '/a.html', '/b.html', '/bundle.html',
-    '/muestras/muestra-a.html', '/muestras/muestra-b.html', '/privacidad.html']);
-  const products = new Set(['/l/thcsej', '/l/dpedsq', '/l/yebgoj', '/l/sskzm']);
-  for (const anchor of document.querySelectorAll('a[href]')) {
-    const raw = anchor.getAttribute('href');
-    if (!raw || raw.startsWith('#')) continue; // Same-document anchors already retain the query.
-    let target;
-    try { target = new URL(raw, current); } catch { continue; }
-    const internal = target.origin === current.origin && pages.has(target.pathname);
-    const gumroad = target.origin === 'https://hippothesis.gumroad.com' && products.has(target.pathname);
-    if ((!internal && !gumroad) || target.username || target.password) continue;
-    // Do not copy arbitrary landing query parameters, click IDs or personal information.
-    for (const key of keys) target.searchParams.set(key, labels[key]);
-    anchor.setAttribute('href', target.href);
+  const labels = {};
+  for (const key of keys) {
+    const all = current.searchParams.getAll(key);
+    if (all.length > 1) return;
+    if (!all.length) continue;
+    if (!valueOk.test(all[0])) return;
+    labels[key] = all[0];
   }
+  if (!Object.keys(labels).length) return;
+  const pages = new Set(['/', '/index.html', '/a.html', '/b.html', '/bundle.html', '/ypf.html', '/combo-tres.html', '/privacidad.html', '/muestras/muestra-a.html', '/muestras/muestra-b.html']);
+  const products = new Set(['/l/sskzm', '/l/dpedsq', '/l/yebgoj', '/l/ylired', '/l/gkdqcm']);
+  function apply(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    for (const anchor of scope.querySelectorAll('a[href]')) {
+      const raw = anchor.getAttribute('href');
+      if (!raw || raw.startsWith('#') || raw.startsWith('mailto:')) continue;
+      let target;
+      try { target = new URL(raw, current); } catch { continue; }
+      const internal = target.origin === current.origin && pages.has(target.pathname);
+      const gumroad = target.origin === 'https://hippothesis.gumroad.com' && products.has(target.pathname);
+      if ((!internal && !gumroad) || target.username || target.password) continue;
+      for (const key of keys) if (labels[key]) target.searchParams.set(key, labels[key]);
+      anchor.setAttribute('href', target.href);
+    }
+  }
+  apply(document);
+  window.__hippoApplyCampaignLabels = apply;
 })();
 </script><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "62626de464f7499cb964f4bef3adb271"}'></script><section id="hippo-marketing" aria-label="Consentimiento de marketing" hidden><p><strong>Marketing opcional.</strong> Si aceptás, Meta Pixel utiliza cookies y datos de navegación para medir campañas y mejorar la publicidad. Podés rechazar y seguir navegando o comprando. Cloudflare mide visitas y rendimiento por separado. <a href="privacidad.html">Ver privacidad</a>.</p><button id="hippo-marketing-accept" type="button">Aceptar marketing</button><button id="hippo-marketing-reject" type="button">Rechazar marketing</button></section><div id="hippo-marketing-settings"><button id="hippo-marketing-manage" type="button">Preferencias de marketing</button><span id="hippo-marketing-status" role="status"></span></div><script id="hippo-marketing-code">'use strict';
 (() => {
@@ -240,9 +247,11 @@ function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='carte
   const ENABLED = true; // Enabled after consent UI QA; explicit marketing opt-in remains required.
   const KEY = 'hippo-marketing-v1';
   const TTL = 180 * 24 * 60 * 60 * 1000;
-  const products = {'/a.html':'thcsej','/b.html':'dpedsq','/bundle.html':'yebgoj','/ypf.html':'flnrej','/combo-tres.html':'qmlroa'};
+  const products = {'/a.html':'gkdqcm','/b.html':'dpedsq','/bundle.html':'yebgoj'};
   const outbound = new Set([...Object.values(products), 'ylired', 'sskzm']);
-  const paths = new Set(['/', '/index.html', ...Object.keys(products)]);
+  const paths = new Set(['/', '/index.html', '/a.html', '/b.html', '/bundle.html', '/ypf.html', '/combo-tres.html', '/privacidad.html', '/muestras/muestra-a.html', '/muestras/muestra-b.html']);
+  const utmKeys = new Set(['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']);
+  const utmValue = /^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$/;
   let granted = false, started = false;
   const banner = document.getElementById('hippo-marketing');
   const manage = document.getElementById('hippo-marketing-manage');
@@ -252,25 +261,36 @@ function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='carte
   }
   function save(value) { try { localStorage.setItem(KEY, JSON.stringify({value, expires: Date.now()+TTL})); } catch {} }
   function safeURL(u, current=false) {
-    const allowed = {
-      utm_source: new Set(['instagram','x','facebook']),
-      utm_medium: new Set(['organic_social','paid_social']),
-      utm_campaign: new Set(['ht_rc28_catalogo_p01']),
-      utm_content: new Set(['rc28_a01_v01','rc28_b01_v01','rc28_d01_v03','rc28_d01_claro_9x16_v01','rc28_l02_oscuro_9x16_v01'])
-    };
-    for (const [key,value] of u.searchParams) {
-      if (u.searchParams.getAll(key).length !== 1) return false;
+    const seen = new Set();
+    for (const [key, value] of u.searchParams) {
+      if (seen.has(key)) return false;
+      seen.add(key);
       if (key === 'fbclid') { if (!/^[A-Za-z0-9_-]{10,500}$/.test(value)) return false; }
-      else if (!allowed[key]?.has(value)) return false;
+      else if (utmKeys.has(key)) { if (!utmValue.test(value)) return false; }
+      else return false;
     }
-    if (u.hash && (!current || !document.getElementById(u.hash.slice(1)))) return false;
+    if (u.hash) {
+      if (!current) return false;
+      const id = u.hash.slice(1);
+      if (!/^[\w:.-]+$/.test(id) || !document.getElementById(id)) return false;
+    }
     return true;
   }
+  function knownReferrer(host) {
+    host = host.toLowerCase().replace(/\.$/, '');
+    const roots = ['instagram.com', 'facebook.com', 'fb.com', 'fb.me', 'messenger.com', 'x.com', 'twitter.com', 't.co'];
+    if (roots.some(root => host === root || host.endsWith('.' + root))) return true;
+    return /^([a-z0-9-]+\.)*google\.[a-z]{2,3}(\.[a-z]{2})?$/.test(host);
+  }
   function safeContext() {
-    // The SDK collects document URL/referrer. Fail closed rather than send arbitrary values.
-    if (!paths.has(location.pathname) || !safeURL(new URL(location.href),true)) return false;
+    // The SDK collects document URL and referrer. Reject malformed values; do not reject a social or search referrer once consent exists.
+    if (!paths.has(location.pathname) || !safeURL(new URL(location.href), true)) return false;
     if (document.referrer) {
-      try { const r = new URL(document.referrer); if (!safeURL(r) || (r.origin === location.origin ? !paths.has(r.pathname) : r.pathname !== '/')) return false; } catch { return false; }
+      let referrer;
+      try { referrer = new URL(document.referrer); } catch { return false; }
+      if (referrer.origin === location.origin) {
+        if (!paths.has(referrer.pathname) || !safeURL(referrer)) return false;
+      } else if (!knownReferrer(referrer.hostname)) return false;
     }
     return true;
   }
