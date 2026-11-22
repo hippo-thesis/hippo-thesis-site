@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https://www.facebook.com; style-src 'sha256-NeOaTAYw546lMeWit5b7sqrvGptRyvlWzcHsMp5zJO0='; script-src 'sha256-bVlmyScobJMfHesIBKo33R6mM0qDFT2fzEaxbQYAhgo=' 'sha256-YxZokn+qqHefmKPAYstbtEpQ5kZmbii6CAblpIO1feQ=' 'sha256-acMChZjOH4sHPjx38nqACNZ63jME7NysrgZPn5R/xJI=' https://static.cloudflareinsights.com/beacon.min.js https://connect.facebook.net; font-src 'self' data:; media-src 'none'; connect-src 'self' https://cloudflareinsights.com https://www.facebook.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https://www.facebook.com; style-src 'sha256-NeOaTAYw546lMeWit5b7sqrvGptRyvlWzcHsMp5zJO0='; script-src 'sha256-bVlmyScobJMfHesIBKo33R6mM0qDFT2fzEaxbQYAhgo=' 'sha256-0W40KnAlLBZ/6ucP17kiet0FPZfq1PNbcSIM4LWQHtg=' 'sha256-vEEMAq4/5ZFeOGHVBpkq/K7LYe5o2LZb9N0U03tsdWE=' https://static.cloudflareinsights.com/beacon.min.js https://connect.facebook.net; font-src 'self' data:; media-src 'none'; connect-src 'self' https://cloudflareinsights.com https://www.facebook.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="description" content="Tesis de inversión, educación financiera y herramientas de análisis. Explorá empresas, escenarios, riesgos y fuentes. Ediciones individuales y combos de compra única; Tesis Viva por membresía mensual o anual, a través de Gumroad.">
 <title>Hippo Thesis · Tesis de inversión y precios</title><link rel="canonical" href="https://hippo-thesis.com/"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><meta property="og:type" content="website"><meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Hippo Thesis"><meta property="og:title" content="Hippo Thesis · Tesis de inversión y precios"><meta property="og:description" content="Tesis de inversión, educación financiera y herramientas de análisis. Explorá empresas, escenarios, riesgos y fuentes. Ediciones individuales y combos de compra única; Tesis Viva por membresía mensual o anual, a través de Gumroad."><meta property="og:url" content="https://hippo-thesis.com/"><meta property="og:image" content="https://hippo-thesis.com/assets/media/og-energia.jpg"><meta property="og:image:alt" content="Portada vigente de Energía"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Hippo Thesis · Tesis de inversión y precios"><meta name="twitter:description" content="Tesis de inversión, educación financiera y herramientas de análisis. Explorá empresas, escenarios, riesgos y fuentes. Ediciones individuales y combos de compra única; Tesis Viva por membresía mensual o anual, a través de Gumroad."><meta name="twitter:image" content="https://hippo-thesis.com/assets/media/og-energia.jpg">
 <link rel="preload" as="image" href="assets/media/hero-earth-1400.webp" imagesrcset="assets/media/hero-earth-800.webp 800w, assets/media/hero-earth-1400.webp 1400w, assets/media/hero-earth.webp 2100w" imagesizes="100vw" fetchpriority="high">
@@ -206,7 +206,6 @@ methodTabs.forEach((tab,i)=>{tab.addEventListener('click',()=>activateMethod(tab
 function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='indicador-hippo'){const d=document.getElementById(key);if(d){d.open=true;d.scrollIntoView({block:'start'});}}}window.addEventListener('hashchange',openLegacyDisclosure);openLegacyDisclosure();
 </script><script id="hippo-campaign-labels">'use strict';
 // Well-formed campaign labels only. Values are sanitized; unknown parameters are not copied.
-// /l/sskzm becomes /l/sskzm/EXP02 only when utm_campaign is exactly exp02_energia_meta.
 (() => {
   const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
   const valueOk = /^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$/;
@@ -223,8 +222,6 @@ function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='indic
   if (!Object.keys(labels).length) return;
   const pages = new Set(['/', '/index.html', '/a.html', '/b.html', '/bundle.html', '/ypf.html', '/combo-tres.html', '/privacidad.html', '/muestras/muestra-a.html', '/muestras/muestra-b.html']);
   const products = new Set(['/l/sskzm', '/l/dpedsq', '/l/yebgoj', '/l/ylired', '/l/gkdqcm']);
-  const energiaPath = '/l/sskzm';
-  const exp02Path = '/l/sskzm/EXP02';
   function apply(root) {
     const scope = root && root.querySelectorAll ? root : document;
     for (const anchor of scope.querySelectorAll('a[href]')) {
@@ -233,10 +230,8 @@ function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='indic
       let target;
       try { target = new URL(raw, current); } catch { continue; }
       const internal = target.origin === current.origin && pages.has(target.pathname);
-      const energia = target.origin === 'https://hippothesis.gumroad.com' && (target.pathname === energiaPath || target.pathname === exp02Path);
       const gumroad = target.origin === 'https://hippothesis.gumroad.com' && products.has(target.pathname);
-      if ((!internal && !gumroad && !energia) || target.username || target.password) continue;
-      if (energia) target.pathname = labels.utm_campaign === 'exp02_energia_meta' ? exp02Path : energiaPath;
+      if ((!internal && !gumroad) || target.username || target.password) continue;
       for (const key of keys) if (labels[key]) target.searchParams.set(key, labels[key]);
       anchor.setAttribute('href', target.href);
     }
@@ -339,8 +334,7 @@ function openLegacyDisclosure(){const key=location.hash.slice(1);if(key==='indic
     const a=event.target.closest('a[href]'); if (!a) return;
     let u; try { u=new URL(a.href); } catch { return; }
     const id=u.pathname.split('/')[2];
-    const energiaOffer=id==='sskzm' && u.pathname==='/l/sskzm/EXP02';
-    if (u.origin==='https://hippothesis.gumroad.com' && (u.pathname==='/l/'+id || energiaOffer) && outbound.has(id)) track('OutboundClick', {content_ids:[id], destination:'gumroad'}, true);
+    if (u.origin==='https://hippothesis.gumroad.com' && u.pathname==='/l/'+id && outbound.has(id)) track('OutboundClick', {content_ids:[id], destination:'gumroad'}, true);
   });
   window.addEventListener('storage',event=> { if (event.key===KEY && readChoice()!=='granted') { granted=false; if (started) { window.fbq.queue=[]; window.fbq('consent','revoke'); clearCookies(); location.reload(); } } });
   function fitBanner(){
